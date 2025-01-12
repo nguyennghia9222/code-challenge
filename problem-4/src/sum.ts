@@ -1,13 +1,13 @@
-const sumToNumber1 = (n: number): number => {
+const sumToNumberA = (n: number): number => {
   return (n * (n + 1)) / 2;
 };
 
-const sumToNumber2 = (n: number): number => {
+const sumToNumberB = (n: number): number => {
   return (n * (n + 1)) / 2;
 };
 
-const sumToNumber3 = (n: number): number => {
+const sumToNumberC = (n: number): number => {
   return (n * (n + 1)) / 2;
 };
 
-export { sumToNumber1, sumToNumber2, sumToNumber3 };
+export { sumToNumberA, sumToNumberB, sumToNumberC };

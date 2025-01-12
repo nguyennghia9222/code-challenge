@@ -1,19 +1,19 @@
-import { sumToNumber1, sumToNumber2, sumToNumber3 } from "../src/sum";
+import { sumToNumberA, sumToNumberB, sumToNumberC } from "../src/sum";
 
-describe("sumToNumber1", () => {
+describe("sumToNumberA", () => {
   test("should return a summation from 1 to n", () => {
-    expect(sumToNumber1(5)).toBe(15);
+    expect(sumToNumberA(5)).toBe(15);
   });
 });
 
-describe("sumToNumber2", () => {
+describe("sumToNumberB", () => {
   test("should return a summation from 1 to n", () => {
-    expect(sumToNumber1(5)).toBe(15);
+    expect(sumToNumberB(5)).toBe(15);
   });
 });
 
-describe("sumToNumber3", () => {
+describe("sumToNumberC", () => {
   test("should return a summation from 1 to n", () => {
-    expect(sumToNumber1(5)).toBe(15);
+    expect(sumToNumberC(5)).toBe(15);
   });
 });

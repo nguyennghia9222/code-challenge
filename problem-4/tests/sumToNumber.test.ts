@@ -9,17 +9,17 @@ describe("sumToNumberA", () => {
 });
 
 describe("sumToNumberB", () => {
-  test("should return a summation from 1 to n - using loop", () => {
+  test("should return a summation from 1 to n - using a loop", () => {
     expect(sumToNumberB(5)).toBe(15);
   });
 });
 
 describe("sumToNumberC", () => {
-  test("should return a summation from 1 to n - using recursive", async () => {
+  test("should return a summation from 1 to n - using recursion", async () => {
     expect(await sumToNumberC(5)).toBe(15);
   });
 
-  test("should return a summation from 1 to n - using recursive with promise", async () => {
+  test("should return a summation from 1 to n - using recursion with promise", async () => {
     expect(await sumToNumberCWithPromise(5)).toBe(15);
   });
 });

@@ -1,14 +1,15 @@
 import { Schema, model } from "mongoose";
+import { TaskStatus } from "../constants/task";
 
 type ITask = {
   _id: string;
   name: string;
-  status: string;
+  status: TaskStatus;
 };
 
 const taskSchema = new Schema<ITask>({
   name: { type: String, required: true },
-  status: { type: String, required: true },
+  status: { type: String, enum: Object.values(TaskStatus), required: true },
 });
 
 const Task = model<ITask>("Task", taskSchema);

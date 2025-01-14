@@ -1,6 +1,6 @@
 import { sumToNumberA } from "../src/sumToNumberA";
 import { sumToNumberB } from "../src/sumToNumberB";
-import { sumToNumberC, sumToNumberCWithPromise } from "../src/sumToNumberC";
+import { sumToNumberC } from "../src/sumToNumberC";
 
 describe("sumToNumberA", () => {
   test("should return a summation from 1 to n - using mathematical formula", () => {
@@ -17,9 +17,5 @@ describe("sumToNumberB", () => {
 describe("sumToNumberC", () => {
   test("should return a summation from 1 to n - using recursion", async () => {
     expect(await sumToNumberC(5)).toBe(15);
-  });
-
-  test("should return a summation from 1 to n - using recursion with promise", async () => {
-    expect(await sumToNumberCWithPromise(5)).toBe(15);
   });
 });

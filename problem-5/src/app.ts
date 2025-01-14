@@ -5,20 +5,16 @@ import taskRoutes from "./routes/taskRoutes";
 const app: Express = express();
 
 app.use(bodyParser.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
-
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  res.status(500).send("Server Error!");
-});
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/tasks", taskRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Code Challenge API!");
+});
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  res.status(500).send("Server Error!");
 });
 
 export default app;

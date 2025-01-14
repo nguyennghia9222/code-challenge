@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { TaskStatus } from "../constants/task";
+import { TaskStatus } from "../constants/taskConstant";
 
 type ITask = {
   _id: string;

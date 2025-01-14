@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { TaskStatus } from "../constants/task";
+import { TaskStatus } from "../constants/taskConstant";
 import { TaskRepository } from "../repositories/taskRepository";
 import Joi from "joi";
 

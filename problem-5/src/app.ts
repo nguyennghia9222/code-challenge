@@ -1,6 +1,6 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import bodyParser from "body-parser";
-import taskRoutes from "./routes/taskRoutes";
+import taskRoutes from "./routes/taskRoute";
 
 const app: Express = express();
 

@@ -4,6 +4,12 @@ import { HttpError } from "../constants/errorConstant";
 import TaskRepository from "../repositories/taskRepository";
 import Joi from "joi";
 
+const getTasksSchema = Joi.object({
+  status: Joi.string()
+    .optional()
+    .valid(...Object.values(TaskStatus)),
+});
+
 const createTaskSchema = Joi.object({
   name: Joi.string().required(),
   status: Joi.string().valid(...Object.values(TaskStatus)),
@@ -34,7 +40,15 @@ export default class TaskHandler {
 
   getTasks = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const tasks = await this.taskRepository.getTasks();
+      const { status } = req.query as { status: string };
+      const { error: validationError } = getTasksSchema.validate({ status });
+
+      if (validationError) {
+        res.status(422).json({ error: HttpError.ValidationError, detail: validationError });
+        return;
+      }
+
+      const tasks = await this.taskRepository.getTasks({ status });
       res.json(tasks);
     } catch (error) {
       next(error);

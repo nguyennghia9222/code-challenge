@@ -18,7 +18,7 @@ describe("taskHandler", () => {
       jest.clearAllMocks();
     });
 
-    it("should get a task by task id", async () => {
+    it("should get task by id", async () => {
       const req = createRequest({ params: { id: "testId" } });
       const res = createResponse();
       const mockResponseData = { _id: "testId", name: "test name", status: "in-progress" };
@@ -32,7 +32,7 @@ describe("taskHandler", () => {
       expect(res._getJSONData()).toEqual(mockResponseData);
     });
 
-    it("should catch error", async () => {
+    it("should handle error", async () => {
       const req = createRequest({ params: { id: "testId" } });
       const res = createResponse();
       repositoryMock.getTask = jest.fn().mockRejectedValue(null);
@@ -50,8 +50,22 @@ describe("taskHandler", () => {
       jest.clearAllMocks();
     });
 
+    it("should validate params", async () => {
+      const req = createRequest({ query: { status: "invalid" } });
+      const res = createResponse();
+      const mockResponseData = [{ _id: "testId", name: "test name", status: "pending" }];
+      repositoryMock.getTasks = jest.fn().mockResolvedValue(mockResponseData);
+
+      const handler = new TaskHandler();
+      await handler.getTasks(req, res, next);
+
+      expect(repositoryMock.getTasks).not.toHaveBeenCalled();
+      expect(res.statusCode).toBe(422);
+      expect(res._getJSONData().error).toEqual(HttpError.ValidationError);
+    });
+
     it("should get tasks", async () => {
-      const req = createRequest();
+      const req = createRequest({ query: { status: "in-progress" } });
       const res = createResponse();
       const mockResponseData = [{ _id: "testId", name: "test name", status: "in-progress" }];
       repositoryMock.getTasks = jest.fn().mockResolvedValue(mockResponseData);
@@ -64,7 +78,7 @@ describe("taskHandler", () => {
       expect(res._getJSONData()).toEqual(mockResponseData);
     });
 
-    it("should catch error", async () => {
+    it("should handle error", async () => {
       const req = createRequest();
       const res = createResponse();
       repositoryMock.getTasks = jest.fn().mockRejectedValue(null);
@@ -111,7 +125,7 @@ describe("taskHandler", () => {
       expect(res._getJSONData()).toEqual(mockResponseData);
     });
 
-    it("should catch error", async () => {
+    it("should handle error", async () => {
       const bodyParams = { name: "test name", status: "pending" };
       const req = createRequest({ body: bodyParams });
       const res = createResponse();
@@ -121,6 +135,86 @@ describe("taskHandler", () => {
       await handler.createTask(req, res, next);
 
       expect(repositoryMock.createTask).toHaveBeenCalled();
+      expect(next).toHaveBeenCalled();
+    });
+  });
+
+  describe("updateTask", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it("should validate params", async () => {
+      const req = createRequest({ params: { id: "testId" }, body: { name: null, status: "invalid" } });
+      const res = createResponse();
+      const mockResponseData = { _id: "testId", name: "updated name", status: "completed" };
+      repositoryMock.updateTask = jest.fn().mockResolvedValue(mockResponseData);
+
+      const handler = new TaskHandler();
+      await handler.updateTask(req, res, next);
+
+      expect(repositoryMock.updateTask).not.toHaveBeenCalled();
+      expect(res.statusCode).toBe(422);
+      expect(res._getJSONData().error).toEqual(HttpError.ValidationError);
+    });
+
+    it("should update task", async () => {
+      const bodyParams = { name: "updated name", status: "completed" };
+      const req = createRequest({ params: { id: "testId" }, body: bodyParams });
+      const res = createResponse();
+      const mockResponseData = { _id: "testId", ...bodyParams };
+      repositoryMock.updateTask = jest.fn().mockResolvedValue(mockResponseData);
+
+      const handler = new TaskHandler();
+      await handler.updateTask(req, res, next);
+
+      expect(repositoryMock.updateTask).toHaveBeenCalledWith("testId", bodyParams);
+      expect(res.statusCode).toBe(200);
+      expect(res._getJSONData()).toEqual(mockResponseData);
+    });
+
+    it("should handle error", async () => {
+      const bodyParams = { name: "updated name", status: "completed" };
+      const req = createRequest({ params: { id: "testId" }, body: bodyParams });
+      const res = createResponse();
+      repositoryMock.updateTask = jest.fn().mockRejectedValue(null);
+
+      const handler = new TaskHandler();
+      await handler.updateTask(req, res, next);
+
+      expect(repositoryMock.updateTask).toHaveBeenCalled();
+      expect(next).toHaveBeenCalled();
+    });
+  });
+
+  describe("deleteTask", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it("should delete task", async () => {
+      const req = createRequest({ params: { id: "testId" } });
+      const res = createResponse();
+      const mockResponseData = { _id: "testId" };
+      repositoryMock.deleteTask = jest.fn().mockResolvedValue(mockResponseData);
+
+      const handler = new TaskHandler();
+      await handler.deleteTask(req, res, next);
+
+      expect(repositoryMock.deleteTask).toHaveBeenCalledWith("testId");
+      expect(res.statusCode).toBe(200);
+      expect(res._getJSONData()).toEqual(mockResponseData);
+    });
+
+    it("should handle error", async () => {
+      const req = createRequest({ params: { id: "testId" } });
+      const res = createResponse();
+      repositoryMock.deleteTask = jest.fn().mockRejectedValue(null);
+
+      const handler = new TaskHandler();
+      await handler.deleteTask(req, res, next);
+
+      expect(repositoryMock.deleteTask).toHaveBeenCalled();
       expect(next).toHaveBeenCalled();
     });
   });

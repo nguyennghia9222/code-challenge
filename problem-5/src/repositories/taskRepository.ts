@@ -11,15 +11,16 @@ export default class TaskRepository {
     return Task.findById(id).exec();
   }
 
-  getTasks() {
+  getTasks(filter: { status: string }) {
+    if (filter && filter.status) return Task.find(filter).exec();
     return Task.find().exec();
   }
 
   updateTask(id: string, params: TaskParams) {
-    return Task.findByIdAndUpdate(id, params).exec();
+    return Task.findByIdAndUpdate(id, params, { new: true }).exec();
   }
 
   deleteTask(id: string) {
-    return Task.findByIdAndDelete(id);
+    return Task.findByIdAndDelete(id, { new: true });
   }
 }

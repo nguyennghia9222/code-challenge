@@ -12,6 +12,11 @@ const taskSchema = new Schema<ITask>({
   status: { type: String, enum: Object.values(TaskStatus), required: true },
 });
 
+taskSchema.index({ status: 1 });
+// Check the document for production deployment
+// https://mongoosejs.com/docs/guide.html#indexes
+// https://www.mongodb.com/docs/manual/reference/method/db.collection.createIndex/#recreating-an-existing-index
+
 const Task = model<ITask>("Task", taskSchema);
 
 export { ITask, Task };

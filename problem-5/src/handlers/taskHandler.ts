@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { TaskStatus } from "../constants/taskConstant";
-import { TaskRepository } from "../repositories/taskRepository";
+import { HttpError } from "../constants/errorConstant";
+import TaskRepository from "../repositories/taskRepository";
 import Joi from "joi";
 
 const createTaskSchema = Joi.object({
@@ -13,7 +14,7 @@ const updateTaskSchema = Joi.object({
   status: Joi.string().valid(...Object.values(TaskStatus)),
 });
 
-class TaskHandler {
+export default class TaskHandler {
   taskRepository: TaskRepository;
 
   constructor() {
@@ -45,7 +46,7 @@ class TaskHandler {
     const { error: validationError } = createTaskSchema.validate({ name, status });
 
     if (validationError) {
-      res.status(422).json(validationError);
+      res.status(422).json({ error: HttpError.ValidationError, detail: validationError });
       return;
     }
 
@@ -63,7 +64,7 @@ class TaskHandler {
     const { error: validationError } = updateTaskSchema.validate({ name, status });
 
     if (validationError) {
-      res.status(422).json(validationError);
+      res.status(422).json({ error: HttpError.ValidationError, detail: validationError });
       return;
     }
 
@@ -86,5 +87,3 @@ class TaskHandler {
     }
   };
 }
-
-export { TaskHandler };

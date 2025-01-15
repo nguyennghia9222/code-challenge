@@ -1,5 +1,5 @@
 import express from "express";
-import { TaskHandler } from "../handlers/taskHandler";
+import TaskHandler from "../handlers/taskHandler";
 
 const router = express.Router();
 const handler = new TaskHandler();

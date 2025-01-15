@@ -1,10 +1,7 @@
-import {
-  connect as mongooseConnect,
-  disconnect as mongooseDisconnect,
-} from "mongoose";
+import { connect as mongooseConnect, disconnect as mongooseDisconnect } from "mongoose";
 
 const connect = async () => {
-  await mongooseConnect("mongodb://127.0.0.1:27017/code-challenge");
+  await mongooseConnect("mongodb://mongodb:27017/code-challenge");
 };
 
 const disconnect = async () => {

@@ -11,6 +11,10 @@ services:
     restart: always
     build:
       dockerfile: Dockerfile
+    environment:
+      PORT: 3000
+      DB_HOST: mongodb
+      DB_PORT: 27017
     ports:
       - 3000:3000
     depends_on:
